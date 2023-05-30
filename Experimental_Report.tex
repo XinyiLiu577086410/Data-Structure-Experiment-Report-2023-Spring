@@ -1,14 +1,16 @@
 \documentclass[supercite]{Experimental_Report}
 
 \title{~~~~~~数据结构实验~~~~~~}
-\author{赵大进}
-%\coauthor{张三、李四}
+\author{刘欣逸}
 \school{计算机科学与技术学院}
-\classnum{CS2110}
-\stunum{U202115630}
-%\costunum{U202115631、U202115631}
-\instructor{陈加忠} % 该系列实验报告模板有华科大计院教师陈加忠制作
-\date{2021年11月11日}
+\classnum{CS2210}
+\stunum{U202115473}
+\instructor{郑渤龙}
+\date{2023年5月29日}
+
+
+\usepackage{ctex}
+\usepackage{listings}
 
 \usepackage{algorithm, multirow}
 \usepackage{algpseudocode}
@@ -22,7 +24,63 @@
 \usepackage{tikz}
 \usepackage{tikzscale}
 \usepackage{pgfplots}
-%\usepackage{enumerate}
+\usepackage{enumitem}
+
+\usepackage{xcolor}
+\definecolor{commentColor}{RGB}{53,129,34}
+\definecolor{keywordColor}{RGB}{172, 62, 158}
+\definecolor{stringColor}{RGB}{194, 62, 42}
+\definecolor{preprocessorColor}{RGB}{114, 75, 48}
+\definecolor{characterColor}{RGB}{31, 53, 207}
+\definecolor{numberColor}{RGB}{166, 166, 166}
+\definecolor{oglobalColor}{RGB}{97, 64, 154}
+\definecolor{globalColor}{RGB}{89, 127, 134}
+\definecolor{functionColor}{RGB}{56,36,124}
+
+\usepackage{fontspec}
+\newfontfamily\sfr{SFMono-Regular}
+\newfontfamily\sfb{SFMono-Bold}
+
+\usepackage{listings}
+\lstset{
+	language=C++,
+	basicstyle=\sffamily\sfr,
+	keywordstyle=\color{keywordColor}\sffamily\sfr,
+	commentstyle=\color{commentColor}\sffamily\sfr,
+	stringstyle=\color{stringColor}\sffamily\sfr,
+	showstringspaces=false,
+	columns=fullflexible,keepspaces,
+	numbers=left,
+	numberstyle=\color{numberColor}\footnotesize\sfr,
+	escapechar=\$,
+	morecomment=*[s][\color{stringColor}\sffamily\sfr]{<}{>},
+	morecomment=[s][\color{characterColor}\sffamily\sfr]{'}{'},
+	keywords=[2]{std, cout, cin},
+	keywordstyle = [2]{\color{oglobalColor}\sffamily\sfr},
+	keywords=[3]{endl, printf, scanf, setw, setfill, setbase, setprecision, time, ctime, rand},
+	keywordstyle = [3]{\color{functionColor}\sffamily\sfr},
+	keywords=[4]{\#include},
+	keywordstyle =[4]{\color{preprocessorColor}\ssfamily\sfr},
+	literate={
+		{<<}{{{\color{black}<<}}}1
+		{>>}{{{\color{black}>>}}}1
+		{*}{{{*}}}1
+		{0}{{{\color{characterColor}0}}}1
+		{1}{{{\color{characterColor}1}}}1
+		{2}{{{\color{characterColor}2}}}1
+		{3}{{{\color{characterColor}3}}}1
+		{4}{{{\color{characterColor}4}}}1
+		{5}{{{\color{characterColor}5}}}1
+		{6}{{{\color{characterColor}6}}}1
+		{7}{{{\color{characterColor}7}}}1
+		{8}{{{\color{characterColor}8}}}1
+		{9}{{{\color{characterColor}9}}}1
+		},
+	tabsize=4,
+	frame=single,
+	frameround=tttt
+}
+
 
 \pgfplotsset{compat=1.16}
 
@@ -98,136 +156,126 @@
 
 \section{基于顺序存储结构的线性表实现}
 
-图\ref{fig1-1}只是网页整体框架举例，它是用visio画的，然后再在visio里通过文件-打印，如图\ref{fig1-2}所示打印成pdf文件，然后再用pdf阅览器的工具，如图\ref{fig1-3}所示，做适当的裁剪。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
 
-请注意，当正文中出现1) 2) 3)罗列时，请必须用enumerate环境，具体如下！
+\subsection{问题描述}
 
+
+要求构造一个具有菜单的功能演示系统。该演示系统实现多个线性表管理。其中，在主函数中准备函数调用所需实参值、显示函数执行结果，并给出适当的操作提示。
+
+实现依据最小完备性和常用性相结合的原则确定的初始化表、销毁表、清空表、判定空表、求表长和获得元素等12种基本运算，具体运算功能定义如下。
 \begin{enumerate}
-\renewcommand{\labelenumi}{\theenumi)}
-	\item C++
-	\item Java
-	\item HTML
+
+
+	\item 初始化表：函数名称是\verb|InitaList(L)|；初始条件是线性表\verb|L|不存在已存在；操作结果是构造一个空的线性表。
+
+
+	\item 销毁表：函数名称是\verb|DestroyList(L)|；初始条件是线性表\verb|L|已存在；操作结果是销毁线性表\verb|L|。
+
+
+	\item 清空表：函数名称是\verb|ClearList(L)|；初始条件是线性表\verb|L|已存在；操作结果是将\verb|L|重置为空表。
+
+
+	\item 判定空表：函数名称是\verb|ListEmpty(L)|；初始条件是线性表\verb|L|已存在；操作结果是若\verb|L|为空表则返回\verb|TRUE|,否则返回\verb|FALSE|。
+
+
+	\item 求表长：函数名称是\verb|ListLength(L)|；初始条件是线性表\verb|L|已存在；操作结果是返回\verb|L|中数据元素的个数。
+
+
+	\item 获得元素：函数名称是\verb|GetElem(L,i,e)|；初始条件是线性表\verb|L|已存在， \\ 1≤\verb|i|≤\verb|ListLength(L)|；操作结果是用\verb|e|返回\verb|L|中第\verb|i|个数据元素的值。
+
+
+	\item 查找元素：函数名称是\verb|LocateElem(L,e,compare())|；初始条件是线性表\verb|L|已存在；操作结果是返回\verb|L|中第一个与\verb|e|满足关系\verb|compare()|关系的数据元素的位序，若这样的数据元素不存在，则返回值为\verb|0|。
+
+
+	\item 获得前驱：函数名称是\verb|PriorElem(L,cur_e,pre_e)|；初始条件是线性表\verb|L|已存在；操作结果是若\verb|cur_e|是\verb|L|的数据元素，且不是第一个，则用\verb|pre_e|返回它的前驱，否则操作失败，\verb|pre_e|无定义。
+
+
+	\item 获得后继：函数名称是\verb|NextElem(L,cur_e,next_e)|；初始条件是线性表\verb|L|已存在；操作结果是若\verb|cur_e|是\verb|L|的数据元素，且不是最后一个，则用\verb|next_e|返回它的后继，否则操作失败，\verb|next_e|无定义。
+
+
+	\item 插入元素：函数名称是\verb|ListInsert(L,i,e)|；初始条件是线性表\verb|L|已存在，\\ 1≤\verb|i|≤\verb|ListLength(L)+1|；操作结果是在\verb|L|的第\verb|i|个位置之前插入新的数据元素\verb|e|。
+
+
+	\item 删除元素：函数名称是\verb|ListDelete(L,i,e)|；初始条件是线性表\verb|L|已存在且非空，1≤\verb|i|≤\verb|ListLength(L)|；操作结果：删除\verb|L|的第\verb|i|个数据元素，用\verb|e|返回其值。
+
+
+	\item 遍历表：函数名称是\verb|ListTraverse(L,visit())|，初始条件是线性表\verb|L|已存在；操作结果是依次对\verb|L|的每个数据元素调用函数\verb|visit()|。
+\end{enumerate}
+此外，还在基础功能的基础上实现了附加功能：
+\begin{enumerate}
+
+	\item 最大连续子数组和：函数名称是\verb|MaxSubArray(L)|；初始条件是线性表\verb|L|已存在且非空，请找出一个具有最大和的连续子数组（子数组最少包含一个元素），操作结果是其最大和；
+
+
+	\item 和为\verb|K|的子数组：函数名称是\verb|SubArrayNum(L,k)|； 初始条件是线性表\verb|L|已存在且非空，操作结果是该数组中和为\verb|k|的连续子数组的个数；
+
+
+	\item 顺序表排序：函数名称是\verb|sortList(L)|；初始条件是线性表\verb|L|已存在；操作结果是将\verb|L|由小到大排序；
+
+	\item 实现线性表的文件形式保存：其中，
+	\begin{itemize}
+		\item 需要设计文件数据记录格式，以高效保存线性表数据逻辑结构\verb|(D,{R})|的完整信息；
+		\item  需要设计线性表文件保存和加载操作合理模式。
+	\end{itemize}
+
+	\item 实现多个线性表管理：设计相应的数据结构管理多个线性表的查找、添加、移除等功能。
+\end{enumerate}
+实验目的：
+\begin{enumerate}
+	\item 加深对线性表的概念、基本运算的理解；
+	\item 熟练掌握线性表的逻辑结构与物理结构的关系；
+	\item 物理结构采用顺序表，熟练掌握线性表的基本运算的实现。
 \end{enumerate}
 
-画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\subsection{问题描述}
-
-说明此实验要解决的基本问题。大力出奇迹！！！参考文献无法显示怎么办？陈老师正在想办法解决\cite{STR2021Neurocom, AVS2021Neurocom}！我是参考文献。我是第二小节\cite{Mehrabian1974An}。我是第二小节\cite{Rezaei2014CVPR}。我是第二小节\cite{Ramnath2008IJCV}。
-
 \subsection{系统设计}
+本系统提供一个采用顺序存储方式的线性表及其操作实现。
+系统可供选择的操作有：
+\begin{itemize}
+	\item 基本操作：初始化线性表、销毁表、清空表、判定空表，求表长、获得元素、查找元素、获得某元素的前驱、获得某元素的后继、插入元素、删除元素、遍历线性表。
+	\item 附加功能：最大连续子数组和、和为\verb|K|的子数组、顺序表排序、实现线性表的文件形式保存、实现多个线性表管理。
+\end{itemize}
 
-包括整体系统结构设计和数据结构设计等。先在文件夹里的bib文件里添加新的参考文献，给每篇参考文献取一个索引的名字，然后再引用比如\cite{STR2021Neurocom}\cite{AVS2021Neurocom, Rezaei2014CVPR}。请注意书籍、期刊论文、专利等bib条目的格式是不一样的。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
+\subsubsection{头文件、宏和类型定义}
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+
+#define TRUE 1
+#define FALSE 0
+#define OK 1
+#define ERROR 0
+#define INFEASIBLE -1
+#define OVERFLOW -2
+#define ISEMPTY -3
+#define LIST_INIT_SIZE 1000
+#define LISTINCREMENT  10
+#define max(i,j) ((i)>(j)?(i):(j))
+
+typedef int status;
+typedef int ElemType; //数据元素类型定义
+typedef struct{  //顺序表（顺序结构）的定义
+    ElemType * elem;
+    int length;
+    int listsize;
+} SqList;
+
+typedef struct THELISTS{  //顺序表的管理表定义
+	 struct ALIST{
+		 char name[30];
+		 SqList L;
+	  } elem[50];
+	  int length = 0;
+	  int listssize = 50;
+ } LISTS;
+\end{lstlisting}
 
 \subsection{系统实现}
 
-主要说明各个主要函数的实现思想，复杂函数可辅助流程图进行说明，函数和系统实现的源代码放在附录中。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
 
 \subsection{系统测试}
 
-主要说明针对各个函数正常和异常的测试用例及测试结果画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\begin{figure}[htb] % here top bottom
-	\begin{center}
-		\includegraphics[scale=0.80]{images/1-1.pdf}
-		\caption{网页整体框架举例}
-		\label{fig1-1}
-	\end{center}
-\end{figure}
-
-\subsection{实验小结}
-
-重点说明在实验中取得的实际经验，例如调试中碰到的典型错误等，不要写套话。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\begin{figure}[htb]
-	\begin{center}
-		\includegraphics[scale=0.60]{images/1-2.png}
-		\caption{在visio里通过文件-打印，把visio图打印成pdf文件}
-		\label{fig1-2}
-	\end{center}
-\end{figure}
-
-画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\begin{figure}[htb]
-	\begin{center}
-		\includegraphics[scale=0.50]{images/1-3.png}
-		\caption{用pdf阅览器的工具，对打印得到pdf图做适当的裁剪}
-		\label{fig1-3}
-	\end{center}
-\end{figure}
-
-其实吧，用Latex写公式也不是很难，请参照公式\ref{equ_loss}。画表格就更简单了，请看表\ref{table2}。
-
-\begin{eqnarray}\label{equ_loss}
-	\mathcal{L}_{id}=\sum_{j=1}^{c}1\{l_k=j\}\log\frac{\exp(f_j(\textbf{W},x_k))}{\sum\nolimits_{l=1}^{c}\exp(f_l(\textbf{W},x_k))}
-\end{eqnarray}
-
-画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\begin{table}
-	\begin{center}
-		\setlength{\tabcolsep}{2.0mm}
-		\caption{Mean and standard deviation of estimation error (Euler angles) on Pandora. The best performance is in \textbf{bold}.}
-		\label{table2}
-		\begin{tabular}{c|ccccc}
-			\hline
-			Method    			        & Data               & Pitch         & Roll           & Yaw              & Accuracy\\
-			\hline
-			\hline			
-			\multirow{5}{*}{POSEidon}   & Depth              & 6.5 $\pm$ 6.6  & 5.4 $\pm$ 5.1  & 10.4 $\pm$ 11.8  & 0.646\\
-			& FfD              	 & 6.8 $\pm$ 7.0  & 5.7 $\pm$ 5.7  & 10.5 $\pm$ 14.6  & 0.647\\
-			& Gray-level         & 7.1 $\pm$ 6.6  & 5.6 $\pm$ 5.8  & 9.0  $\pm$ 10.9  & 0.639\\
-			& Depth + FfD	     & 5.6 $\pm$ 5.0  & 4.9 $\pm$ 5.0  & 9.8  $\pm$ 13.4  & 0.698\\
-			& Depth + FfD + MI   & 5.7 $\pm$ 5.6  & 4.9 $\pm$ 5.1  & 9.0  $\pm$ 11.9  & 0.715\\
-			\hline
-			DRF                         & Depth              & 6.2 $\pm$ 9.5  & 4.6 $\pm$ 6.7  & 9.3  $\pm$ 14.6  & --\\
-			\hline
-			\multirow{3}{*}{Ours}   	& Depth              & 5.9 $\pm$ 6.2  & 4.5 $\pm$ 4.9  & 8.8  $\pm$ 10.9  & 0.666\\
-			& RGB                & 5.5 $\pm$ 5.3  & 4.4 $\pm$ 5.5  & 8.6  $\pm$ 9.3   & 0.698\\
-			& RGB + Depth        & 5.0 $\pm$ 4.8  & 4.3 $\pm$ 4.9  & 8.1  $\pm$ 8.3   & \textbf{0.737}\\
-			\hline
-		\end{tabular}
-	\end{center}
-\end{table}
-
-\newpage
-
-\section{基于链式存储结构的线性表实现}
-
-描述主页的结构，给出主页截图，描述主要设计思路等，请见图\ref{fig2-1}。描述主页的结构，给出主页截图，描述主要设计思路等。描述主页的结构，给出主页截图，描述主要设计思路等。描述主页的结构，给出主页截图，描述主要设计思路等。描述主页的结构，给出主页截图，描述主要设计思路等。描述主页的结构，给出主页截图，描述主要设计思路等。描述主页的结构，给出主页截图，描述主要设计思路等。
-
-\begin{figure}[htb]
-	\begin{center}
-		\includegraphics[scale=0.40]{images/2-1.jpg}
-		\caption{主页举例}
-		\label{fig2-1}
-	\end{center}
-\end{figure}
-
-\subsection{问题描述}
-
-说明此实验要解决的基本问题。大力出奇迹！！！参考文献无法显示怎么办？陈老师正在想办法解决\cite{STR2021Neurocom, AVS2021Neurocom}！我是参考文献。我是第二小节\cite{Mehrabian1974An}。我是第二小节\cite{Rezaei2014CVPR}。我是第二小节\cite{Ramnath2008IJCV}。
-
-\subsection{系统设计}
-
-包括整体系统结构设计和数据结构设计等。先在文件夹里的bib文件里添加新的参考文献，给每篇参考文献取一个索引的名字，然后再引用比如\cite{STR2021Neurocom}\cite{AVS2021Neurocom, Rezaei2014CVPR}。请注意书籍、期刊论文、专利等bib条目的格式是不一样的。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\subsection{系统实现}
-
-主要说明各个主要函数的实现思想，复杂函数可辅助流程图进行说明，函数和系统实现的源代码放在附录中。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\subsection{系统测试}
-
-主要说明针对各个函数正常和异常的测试用例及测试结果画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\begin{figure}[htb] % here top bottom
-	\begin{center}
-		\includegraphics[scale=0.80]{images/1-1.pdf}
-		\caption{网页整体框架举例}
-		\label{fig4-1}
-	\end{center}
-\end{figure}
 
 \subsection{实验小结}
 
@@ -235,98 +283,17 @@
 
 \section{基于二叉链表的二叉树实现}
 
-给出分页面截图，描述主要设计思路等。给出分页面截图，描述主要设计思路等。给出分页面截图，描述主要设计思路等。给出分页面截图，描述主要设计思路等。
 
 \subsection{问题描述}
 
-说明此实验要解决的基本问题。大力出奇迹！！！参考文献无法显示怎么办？陈老师正在想办法解决\cite{STR2021Neurocom, AVS2021Neurocom}！我是参考文献。我是第二小节\cite{Mehrabian1974An}。我是第二小节\cite{Rezaei2014CVPR}。我是第二小节\cite{Ramnath2008IJCV}。
 
 \subsection{系统设计}
 
-包括整体系统结构设计和数据结构设计等。先在文件夹里的bib文件里添加新的参考文献，给每篇参考文献取一个索引的名字，然后再引用比如\cite{STR2021Neurocom}\cite{AVS2021Neurocom, Rezaei2014CVPR}。请注意书籍、期刊论文、专利等bib条目的格式是不一样的。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
 
 \subsection{系统实现}
 
-主要说明各个主要函数的实现思想，复杂函数可辅助流程图进行说明，函数和系统实现的源代码放在附录中。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
 
 \subsection{系统测试}
-
-主要说明针对各个函数正常和异常的测试用例及测试结果画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\begin{figure}[htb] % here top bottom
-	\begin{center}
-		\includegraphics[scale=0.80]{images/1-1.pdf}
-		\caption{网页整体框架举例}
-		\label{fig3-1}
-	\end{center}
-\end{figure}
-
-\subsection{实验小结}
-
-如果实验报告中要用到算法伪代码，请参考算法\ref{alg:1}，也可以参考算法\ref{alg:2}。如果实验报告中要用到算法伪代码，请参考算法\ref{alg:1}，也可以参考算法\ref{alg:2}。如果实验报告中要用到算法伪代码，请参考算法\ref{alg:1}，也可以参考算法\ref{alg:2}。如果实验报告中要用到算法伪代码，请参考算法\ref{alg:1}，也可以参考算法\ref{alg:2}。
-
-\begin{shaded*}\begin{alg}{一个复杂算法}
-		\label{alg:1}
-		\begin{algorithmic}
-			\Input Two numbers $a$ and $b$
-			\Output The sum of $a$ and $b$
-			\Procedure{A-Plus-B}{$a, b$}
-			\If $a = 0$
-			\State \Return $b$
-			\EndIf
-			\State $res \gets 0$
-			\While{$b \neq 0$}
-			\State Increase $res$ by $1$
-			\State $b \gets b - 1$
-			\EndWhile
-			\State \Return $res$
-			\EndProcedure
-		\end{algorithmic}
-\end{alg}\end{shaded*}
-
-如果实验报告中要用到算法伪代码，请参考算法\ref{alg:1}，也可以参考算法\ref{alg:2}。如果实验报告中要用到算法伪代码，请参考算法\ref{alg:1}，也可以参考算法\ref{alg:2}。如果实验报告中要用到算法伪代码，请参考算法\ref{alg:1}，也可以参考算法\ref{alg:2}。如果实验报告中要用到算法伪代码，请参考算法\ref{alg:1}，也可以参考算法\ref{alg:2}。
-
-\begin{algorithm}[h] 
-	\caption{一个更复杂算法}
-	\begin{algorithmic}[1]
-		\State Initialization: $I_{xy}$, $z_{f}=Zeros(128, 128)$; 
-		\For{$0\leq n \textless N$}
-		\State $i=\lfloor x_n \rfloor+64$, $j=\lfloor y_n \rfloor + 64$
-		\If{$z_n<0$ and $|z_n|>|z_{f}(i,j)|$};
-		\State $z_{f}(i,j)=z_n$;
-		\EndIf
-		\State $I_{xy}(i,j)=z_{f}(i,j)$;
-		\EndFor 
-	\end{algorithmic}\label{alg:2}
-\end{algorithm}
-
-\newpage
-
-\section{基于邻接表的图实现}
-
-\subsection{问题描述}
-
-说明此实验要解决的基本问题。大力出奇迹！！！参考文献无法显示怎么办？陈老师正在想办法解决\cite{STR2021Neurocom, AVS2021Neurocom}！我是参考文献。我是第二小节\cite{Mehrabian1974An}。我是第二小节\cite{Rezaei2014CVPR}。我是第二小节\cite{Ramnath2008IJCV}。
-
-\subsection{系统设计}
-
-包括整体系统结构设计和数据结构设计等。先在文件夹里的bib文件里添加新的参考文献，给每篇参考文献取一个索引的名字，然后再引用比如\cite{STR2021Neurocom}\cite{AVS2021Neurocom, Rezaei2014CVPR}。请注意书籍、期刊论文、专利等bib条目的格式是不一样的。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\subsection{系统实现}
-
-主要说明各个主要函数的实现思想，复杂函数可辅助流程图进行说明，函数和系统实现的源代码放在附录中。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\subsection{系统测试}
-
-主要说明针对各个函数正常和异常的测试用例及测试结果画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。画图说明网页的整体框架，进行简要的文字描述等。
-
-\begin{figure}[htb] % here top bottom
-	\begin{center}
-		\includegraphics[scale=0.80]{images/1-1.pdf}
-		\caption{网页整体框架举例}
-		\label{fig5-1}
-	\end{center}
-\end{figure}
 
 \subsection{实验小结}
 
@@ -334,53 +301,26 @@
 
 \section{课程的收获和建议}
 
-描述通过学习该专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。描述通过学习该专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。描述通过学习该专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。描述通过学习该专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。
+
 
 \subsection{基于顺序存储结构的线性表实现}
 
-描述通过学习计算机基础知识专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。描述网页的设计和实现过程中遇到的问题及如何解决。描述网页的设计和实现过程中遇到的问题及如何解决。描述网页的设计和实现过程中遇到的问题及如何解决。描述网页的设计和实现过程中遇到的问题及如何解决。描述网页的设计和实现过程中遇到的问题及如何解决。描述网页的设计和实现过程中遇到的问题及如何解决。描述网页的设计和实现过程中遇到的问题及如何解决。描述网页的设计和实现过程中遇到的问题及如何解决。
+
 
 \subsection{基于链式存储结构的线性表实现}
 
-描述通过学习文档撰写工具LaTeX专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。描述通过学习文档撰写工具LaTeX专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。
+
 
 \subsection{基于二叉链表的二叉树实现}
 
-描述通过学习编程工具Python专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。描述通过学习编程工具Python专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。
-
-\subsection{基于二叉链表的二叉树实现}
-
-描述通过学习计算机基础知识专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。描述通过学习计算机基础知识专题，有何收获，有何建议，如某专题可适当减少讲授时间、某专题可适当增加讲授内容和时间等。
 
 
-\nocite{*} %% 作用是不对文献进行引用，但可以生成文献列表
+\subsection{基于邻接表的图实现}
 
-\bibliographystyle{Experimental_Report}
-\bibliography{Experimental_Report}
-\setcounter{secnumdepth}{0}
-\appendix
 
 \section{附录A 基于顺序存储结构线性表实现的源程序}
-
-\noindent
-/* Linear Table On Sequence Structure */\\
-\#include <stdio.h>\\
-\#include <malloc.h>\\
-\#include <stdlib.h>\\
-
-\noindent
-/*---------page 10 on textbook ---------*/\\
-\#define TRUE 1\\
-\#define FALSE 0\\
-\#define OK 1\\
-\#define ERROR 0\\
-\#define INFEASTABLE -1\\
-\#define OVERFLOW -2\\
-\newpage
 \section{附录B 基于链式存储结构线性表实现的源程序}
-\newpage
 \section{附录C 基于二叉链表二叉树实现的源程序}
-\newpage
 \section{附录D 基于邻接表图实现的源程序}
 
 \end{document}
