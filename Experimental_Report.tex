@@ -11,7 +11,7 @@
 
 \usepackage{ctex}
 \usepackage{listings}
-
+\usepackage{placeins}
 \usepackage{algorithm, multirow}
 \usepackage{algpseudocode}
 \usepackage{amsmath}
@@ -181,7 +181,7 @@
 	\item 求表长：函数名称是\verb|ListLength(L)|；初始条件是线性表\verb|L|已存在；操作结果是返回\verb|L|中数据元素的个数。
 
 
-	\item 获得元素：函数名称是\verb|GetElem(L,i,e)|；初始条件是线性表\verb|L|已存在， \\ 1≤\verb|i|≤\verb|ListLength(L)|；操作结果是用\verb|e|返回\verb|L|中第\verb|i|个数据元素的值。
+	\item 获得元素：函数名称是\verb|GetElem(L,i,e)|；初始条件是线性表\verb|L|已存在， \\ \verb|1<=i<=ListLength(L)|；操作结果是用\verb|e|返回\verb|L|中第\verb|i|个数据元素的值。
 
 
 	\item 查找元素：函数名称是\verb|LocateElem(L,e,compare())|；初始条件是线性表\verb|L|已存在；操作结果是返回\verb|L|中第一个与\verb|e|满足关系\verb|compare()|关系的数据元素的位序，若这样的数据元素不存在，则返回值为\verb|0|。
@@ -193,10 +193,10 @@
 	\item 获得后继：函数名称是\verb|NextElem(L,cur_e,next_e)|；初始条件是线性表\verb|L|已存在；操作结果是若\verb|cur_e|是\verb|L|的数据元素，且不是最后一个，则用\verb|next_e|返回它的后继，否则操作失败，\verb|next_e|无定义。
 
 
-	\item 插入元素：函数名称是\verb|ListInsert(L,i,e)|；初始条件是线性表\verb|L|已存在，\\ 1≤\verb|i|≤\verb|ListLength(L)+1|；操作结果是在\verb|L|的第\verb|i|个位置之前插入新的数据元素\verb|e|。
+	\item 插入元素：函数名称是\verb|ListInsert(L,i,e)|；初始条件是线性表\verb|L|已存在，\\ \verb|1<=i<=ListLength(L)+1|；操作结果是在\verb|L|的第\verb|i|个位置之前插入新的数据元素\verb|e|。
 
 
-	\item 删除元素：函数名称是\verb|ListDelete(L,i,e)|；初始条件是线性表\verb|L|已存在且非空，1≤\verb|i|≤\verb|ListLength(L)|；操作结果：删除\verb|L|的第\verb|i|个数据元素，用\verb|e|返回其值。
+	\item 删除元素：函数名称是\verb|ListDelete(L,i,e)|；初始条件是线性表\verb|L|已存在且非空，\verb|1<=i<=ListLength(L)|；操作结果：删除\verb|L|的第\verb|i|个数据元素，用\verb|e|返回其值。
 
 
 	\item 遍历表：函数名称是\verb|ListTraverse(L,visit())|，初始条件是线性表\verb|L|已存在；操作结果是依次对\verb|L|的每个数据元素调用函数\verb|visit()|。
@@ -210,7 +210,7 @@
 	\item 和为\verb|K|的子数组：函数名称是\verb|SubArrayNum(L,k)|； 初始条件是线性表\verb|L|已存在且非空，操作结果是该数组中和为\verb|k|的连续子数组的个数；
 
 
-	\item 顺序表排序：函数名称是\verb|sortList(L)|；初始条件是线性表\verb|L|已存在；操作结果是将\verb|L|由小到大排序；
+	\item 顺序表排序：函数名称是\verb|SortList(L)|；初始条件是线性表\verb|L|已存在；操作结果是将\verb|L|由小到大排序；
 
 	\item 实现线性表的文件形式保存：其中，
 	\begin{itemize}
@@ -271,13 +271,285 @@ typedef struct THELISTS{  //顺序表的管理表定义
  } LISTS;
 \end{lstlisting}
 
+\subsubsection{函数设计}
+\begin{enumerate}
+\item 函数名称：\verb|InitaList(L)|；
+
+初始条件：线性表\verb|L|不存在；
+
+操作结果：是构造一个空的线性表；
+
+算法思路：先分配存储空间后，将表长设为\verb|0|，再将线性表容量变量设为预定义的初始存储容量。
+
+\item 函数名称：\verb|DestroyList(L)|；
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：销毁线性表\verb|L|；
+
+算法思路：释放内存并将其他结构成员设置为初值。
+
+\item 函数名称：\verb|ClearList(L)|；
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：将\verb|L|重置为空表；
+
+算法思路：将表长设为\verb|0|。
+
+\item 函数名称：\verb|ListEmpty(L)|；
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：若\verb|L|为空表则返回\verb|TRUE|,否则返回\verb|FALSE|；
+
+算法思路：表长为\verb|0|则为空表，否则不是空。
+
+\item 函数名称：\verb|ListLength(L)|；
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：返回\verb|L|中数据元素的个数；
+
+算法思路：返回线性表表长的值。
+
+\item 函数名称：\verb|GetElem(L,i,e)|；
+
+初始条件：线性表已存在，\verb|1<=i<=ListLength(L)|；
+
+操作结果：用\verb|e|返回\verb|L|中第\verb|i|个数据元素的值；
+
+算法思路：将线性表中第\verb|i|个数据元素的值赋值给\verb|e|。
+
+\item 函数名称：\verb|LocateElem(L,e,compare())|；
+
+初始条件：线性表已存在；
+
+操作结果：返回线性表中第\verb|1|个与\verb|e|相等的数据元素的位置，若这样的数据元素不存在，则返回值为\verb|0|；
+
+算法思路：从索引低位开始顺序查找，如果找到返回该元素的位序
+
+\item 函数名称：\verb|PriorElem(L,cur_e,pre_e)|；
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：若\verb|cur_e|是\verb|L|的数据元素并且不是第一个数据元素，用\verb|pre_e|返回它的前驱，否则操作失败。
+
+算法思路：首先判断该元素不是第一个数据元素，再查找该结点，如果查找成功且该结点有前驱元素，则将前驱元素赋值给\verb|pre_e|。若未找到该结点，或者该结点是第一个数据元素，则返回\verb|ERROR|。
+
+\item 函数名称：\verb|NextElem(L,cur_e,next_e)|
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：若\verb|cur_e|是\verb|L|的数据元素，且不是最后一个，则用\verb|next_e|返回它的后继，否则操作失败，\verb|next_e|无定义。
+
+算法思路：首先判断该元素不是最后一个数据元素，再查找该结点，如果查找成功且该结点有后继元素，则将后继元素赋值给\verb|next_e|。若未找到该结点，或者该结点是最后一个数据元素，则返回\verb|ERROR|。
+
+\item 函数名称：\verb|ListInsert(L,i,e)|
+
+初始条件：线性表\verb|L|已存在且非空，\verb|1<=i<=ListLength(L)+1|；
+
+操作结果：在\verb|L|的第\verb|i|个位置之前插入新的数据元素\verb|e|。
+
+算法思路：先遍历顺序表，若线性表\verb|L|已存在且不为空，输入的\verb|i|值不合法，则返回\verb|ERROR|；若\verb|i|的值合法，则在线性表的第\verb|i|个位置前插入新数据元素\verb|e|，返回\verb|OK|。若线性表\verb|L|不存在，返回\verb|INFEASIBLE|.
+
+\item 函数名称：\verb|ListDelete(L,i,e)|；
+
+初始条件：线性表\verb|L|已存在且非空，\verb|1<=i<=ListLength(L)|；
+
+操作结果：删除\verb|L|的第\verb|i|个数据元素，用\verb|e|返回其值；
+
+设计思想：先遍历顺序表，如果线性表\verb|L|已存在且非空，并且输入的\verb|i|值不合法，则返回\verb|ERROR|。若满足线性表\verb|L|已存在且\verb|L|非空，并且\verb|i|的值合法，则删除线性表的第\verb|i|个位置的数据元素，并用\verb|e|返回其值，返回\verb|OK|。
+
+\item 函数名称：\verb|ListTraverse(L)|；、
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：依次遍历\verb|L|的每个数据元素；
+
+设计思想：若线性表\verb|L|存在，则依序遍历元素；否则返回\verb|ERROR|。
+
+\item 函数名称：\verb|SaveList(L,filename)|；
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：将线性表\verb|L|保存到指定文件；
+
+算法思路：用\verb|fprintf|保存为文件。
+
+\item 函数名称：\verb|LoadList(L)|；
+
+初始条件：文件\verb|filename|已存在；
+
+操作结果：从文件中加载数据到\verb|L|；
+
+算法思路：用\verb|fscanf|将文件读取顺序表。
+
+\item 函数名称：\verb|MaxSubArray(L)|；
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：返回线性表\verb|L|的最大连续子数组和；
+
+算法思路：逐个枚举子数组求出最大连续子数组和。
+
+\item 函数名称：\verb|SubArrayNum(L,k)|；
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：返回线性表\verb|L|的和为k的连续子数组个数；
+
+算法思路：逐个枚举子数组求出和为k的连续子数组个数。
+
+\item 函数名称：\verb|SortList(L)|
+
+初始条件：线性表\verb|L|已存在；
+
+操作结果：将\verb|L|中的元素按升序排序；
+
+算法思路：用冒泡排序算法将\verb|L|的数据元素按升序排序。
+
+\end{enumerate}
+
 \subsection{系统实现}
 
+见《附录A 基于顺序存储结构线性表实现的源程序》。
 
 \subsection{系统测试}
+先用插入操作创建包含元素1、2、3、4、5、6、7的顺序表。再测试判空、查找、删除、遍历、销毁等基础功能。
+\begin{enumerate}
+\item \verb|InitList()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.21.29.png}
+	\end{figure}
+\FloatBarrier
 
+\item \verb|ListInsert()|
+	依次插入了元素1、2、3、4、5、6、7。
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.21.51.png}
+	\end{figure}
+	\FloatBarrier
+\newpage
+
+\item \verb|ListEmpty()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.23.33.png}
+	\end{figure}
+	\FloatBarrier
+
+\item \verb|ListLength()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.23.42.png}
+	\end{figure}
+	\FloatBarrier
+
+\newpage
+
+\item \verb|GetElem()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.24.07.png}
+	\end{figure}
+	\FloatBarrier
+
+\item \verb|LocateElem()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.22.44.png}
+	\end{figure}
+	\FloatBarrier
+	
+\newpage
+
+\item \verb|PriorElem()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.22.56.png}
+	\end{figure}
+	\FloatBarrier
+
+\item \verb|NextElem()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.23.17.png}
+	\end{figure}
+	\FloatBarrier
+	
+\newpage
+
+\item \verb|ListDelete()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.23.53.png}
+	\end{figure}
+	\FloatBarrier
+
+\item \verb|ListTraverse()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 21.46.52.png}
+	\end{figure}
+	\FloatBarrier
+
+\newpage
+
+\item \verb|ClearList()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 21.56.17.png}
+	\end{figure}
+	\FloatBarrier
+
+\item \verb|DestroyList()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 18.24.43.png}
+	\end{figure}
+	\FloatBarrier
+
+\end{enumerate}
+\newpage
+
+对顺序表{7,6,5,4,3,2,1}测试附加功能：
+\begin{enumerate}
+
+	\item \verb|MaxSubArray()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 22.14.26.png}
+	\end{figure}
+	\FloatBarrier
+
+		
+	\item \verb|SubArrayNum()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 22.14.44.png}
+	\end{figure}
+	\FloatBarrier
+
+	\newpage
+
+	\item \verb|SortList()|
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 22.16.47.png}
+	\end{figure}
+	\FloatBarrier
+	
+	\newpage
+
+	\item \verb|SaveList()|、\verb|LoadList()|、\verb|List()|等多线性表管理功能。
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 22.19.25.png}
+	\end{figure}
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 22.19.36.png}
+	\end{figure}
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 22.19.46.png}
+	\end{figure}
+	\begin{figure}[!htb]
+		\includegraphics[width=0.8\linewidth]{images/截屏2023-06-01 22.20.01.png}
+	\end{figure}
+	\FloatBarrier
+\end{enumerate}
+
+\newpage
+\newpage
 
 \subsection{实验小结}
+本次实验是对我C语言、数据结构知识掌握程度的一次检验。在这次实验中我发现了自己的许多不足，如对C语言文件读写的掌握不足，代码规范仍有不足。这次实验加强了我对顺序表的理解和掌握，增强的我的编写代码的能力。最后，感谢老师和助教的指导和帮助。
 
 \newpage
 

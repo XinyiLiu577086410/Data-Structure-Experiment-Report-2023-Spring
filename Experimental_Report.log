@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.9.30)  31 MAY 2023 02:27
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.9.30)  1 JUN 2023 22:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -618,6 +618,8 @@ Package: listings 2020/03/24 1.8d (Carsten Heinz)
 Package: xeCJK-listings 2021/12/12 v3.8.8 xeCJK patch file for listings
 \l__xeCJK_listings_max_char_int=\count343
 \l__xeCJK_listings_flag_int=\count344
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/placeins/placeins.sty
+Package: placeins 2005/04/18  v 2.2
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/algorithms/algorithm.sty
 Invalid UTF-8 byte or sequence at line 11 replaced by U+FFFD.
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating environment
@@ -1369,9 +1371,56 @@ Package fontspec Info: Font family 'PingFangSC(0)' created for font 'PingFang
 (fontspec)             SC/OT:script=hani;language=dflt;embolden=4;slant=0.167;"
 (fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
 
- [3] [4] [5
+ [3] [4] [5] [6]
+File: images/截屏2023-06-01 18.21.29.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.21.29.png>
+File: images/截屏2023-06-01 18.21.51.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.21.51.png>
+ [7]
+File: images/截屏2023-06-01 18.23.33.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.23.33.png>
+File: images/截屏2023-06-01 18.23.42.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.23.42.png>
+ [8]
+File: images/截屏2023-06-01 18.24.07.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.24.07.png>
+File: images/截屏2023-06-01 18.22.44.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.22.44.png>
+ [9]
+File: images/截屏2023-06-01 18.22.56.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.22.56.png>
+File: images/截屏2023-06-01 18.23.17.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.23.17.png>
+ [10]
+File: images/截屏2023-06-01 18.23.53.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.23.53.png>
+File: images/截屏2023-06-01 21.46.52.png Graphic file (type bmp)
+<images/截屏2023-06-01 21.46.52.png>
+ [11]
+File: images/截屏2023-06-01 21.56.17.png Graphic file (type bmp)
+<images/截屏2023-06-01 21.56.17.png>
+File: images/截屏2023-06-01 18.24.43.png Graphic file (type bmp)
+<images/截屏2023-06-01 18.24.43.png>
+ [12]
+File: images/截屏2023-06-01 22.14.26.png Graphic file (type bmp)
+<images/截屏2023-06-01 22.14.26.png>
+File: images/截屏2023-06-01 22.14.44.png Graphic file (type bmp)
+<images/截屏2023-06-01 22.14.44.png>
+ [13]
+File: images/截屏2023-06-01 22.16.47.png Graphic file (type bmp)
+<images/截屏2023-06-01 22.16.47.png>
+ [14]
+File: images/截屏2023-06-01 22.19.25.png Graphic file (type bmp)
+<images/截屏2023-06-01 22.19.25.png>
+File: images/截屏2023-06-01 22.19.36.png Graphic file (type bmp)
+<images/截屏2023-06-01 22.19.36.png>
+File: images/截屏2023-06-01 22.19.46.png Graphic file (type bmp)
+<images/截屏2023-06-01 22.19.46.png>
+File: images/截屏2023-06-01 22.20.01.png Graphic file (type bmp)
+<images/截屏2023-06-01 22.20.01.png>
+ [15] [16] [17] [18
 
-] [6
+] [19
 
 ] (./Experimental_Report.aux)
 
@@ -1382,12 +1431,12 @@ Package rerunfilecheck Info: File `Experimental_Report.out' has not changed.
 (rerunfilecheck)             Checksum: B0DF44B1EB681EA6CA93CBE4D0087A6F;2699.
  ) 
 Here is how much of TeX's memory you used:
- 43562 strings out of 476179
- 1043028 string characters out of 5809544
- 1636450 words of memory out of 5000000
- 63494 multiletter control sequences out of 15000+600000
+ 43790 strings out of 476179
+ 1052199 string characters out of 5809544
+ 1636540 words of memory out of 5000000
+ 63696 multiletter control sequences out of 15000+600000
  487010 words of font info for 180 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  88i,12n,103p,1209b,1880s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Experimental_Report.pdf (8 pages).
+Output written on Experimental_Report.pdf (21 pages).
